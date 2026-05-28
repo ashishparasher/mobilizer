@@ -6,11 +6,6 @@
     "apps/*",
     "packages/*"
   ],
-  "overrides": {
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "react-native-safe-area-context": "5.7.0"
-  },
   "devDependencies": {
     "lightningcss": "^1.27.0"
   }
