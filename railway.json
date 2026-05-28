@@ -2,10 +2,11 @@
   "$schema": "https://railway.app/railway.schema.json",
   "build": {
     "builder": "NIXPACKS",
-    "buildCommand": "npm run build"
+    "installCommand": "npm install",
+    "buildCommand": "npm run build --workspace=@mobilize/api"
   },
   "deploy": {
-    "startCommand": "npm run start",
+    "startCommand": "npm run start --workspace=@mobilize/api",
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 10
   }
