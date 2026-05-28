@@ -1,0 +1,65 @@
+{
+  "nav": {
+    "discover": "Discover",
+    "map": "Map",
+    "events": "Events",
+    "profile": "Profile"
+  },
+  "common": {
+    "apply": "Apply Now",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "loading": "Loading...",
+    "retry": "Try Again",
+    "search": "Search",
+    "submit": "Submit",
+    "done": "Done",
+    "next": "Next",
+    "back": "Back",
+    "edit": "Edit",
+    "delete": "Delete",
+    "share": "Share",
+    "copy": "Copy",
+    "copied": "Copied!"
+  },
+  "status": {
+    "confirmed": "Confirmed",
+    "pending": "Pending",
+    "waitlisted": "Waitlisted",
+    "cancelled": "Cancelled",
+    "completed": "Completed",
+    "active": "Active",
+    "rejected": "Rejected"
+  },
+  "errors": {
+    "network": "No internet connection",
+    "generic": "Something went wrong",
+    "tryAgain": "Please try again",
+    "unauthorized": "Session expired. Please login again.",
+    "forbidden": "You don't have permission to do this."
+  },
+  "screens": {
+    "home": "Discover Opportunities",
+    "events": "My Events",
+    "earnings": "Earnings",
+    "profile": "My Profile",
+    "notifications": "Notifications",
+    "checkin": "Check In",
+    "checkout": "Check Out",
+    "rating": "Rate Event",
+    "referral": "Refer & Earn",
+    "settings": "Settings"
+  },
+  "profile": {
+    "reliabilityScore": "Reliability Score",
+    "categories": "Preferred Categories",
+    "language": "Language",
+    "upiId": "UPI ID",
+    "goOffline": "Go Offline",
+    "logout": "Log Out",
+    "editProfile": "Edit Profile",
+    "paymentSettings": "Payment Settings",
+    "notifications": "Notifications"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "@mobilize/shared",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/types/index.ts",
+  "types": "src/types/index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

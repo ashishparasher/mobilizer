@@ -1,0 +1,58 @@
+{
+  "expo": {
+    "name": "Mobilize",
+    "slug": "mobilize-participant",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1A1A2E"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Allow Mobilize to access your location to discover nearby events.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Allow Mobilize to access your location to discover nearby events.",
+        "NSCameraUsageDescription": "Allow Mobilize to access your camera for selfie checkins and QR code scanning."
+      }
+    },
+    "android": {
+      "package": "com.mobilize.participant",
+      "adaptiveIcon": {
+        "backgroundColor": "#FFFFFF",
+        "foregroundImage": "./assets/adaptive-icon.png"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "CAMERA"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow Mobilize to access your location to discover nearby events."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Mobilize to access your camera for selfie checkins."
+        }
+      ],
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow Mobilize to access your camera to scan campaign QR codes."
+        }
+      ]
+    ]
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "nav": {
+    "discover": "खोजें",
+    "map": "नक्शा",
+    "events": "इवेंट",
+    "profile": "प्रोफाइल"
+  },
+  "common": {
+    "apply": "अभी आवेदन करें",
+    "cancel": "रद्द करें",
+    "confirm": "पुष्टि करें",
+    "save": "सहेजें",
+    "loading": "लोड हो रहा है...",
+    "retry": "पुनः प्रयास",
+    "search": "खोजें",
+    "submit": "भेजें",
+    "done": "हो गया",
+    "next": "आगे",
+    "back": "पीछे",
+    "edit": "संपादित करें",
+    "delete": "हटाएं",
+    "share": "साझा करें",
+    "copy": "कॉपी करें",
+    "copied": "कॉपी हो गया!"
+  },
+  "status": {
+    "confirmed": "पुष्टि हुई",
+    "pending": "लंबित",
+    "waitlisted": "प्रतीक्षा सूची",
+    "cancelled": "रद्द",
+    "completed": "पूर्ण",
+    "active": "सक्रिय",
+    "rejected": "अस्वीकृत"
+  },
+  "errors": {
+    "network": "इंटरनेट कनेक्शन नहीं है",
+    "generic": "कुछ गलत हो गया",
+    "tryAgain": "कृपया पुनः प्रयास करें",
+    "unauthorized": "सत्र समाप्त हो गया। कृपया दोबारा लॉगिन करें।",
+    "forbidden": "आपको इसकी अनुमति नहीं है।"
+  },
+  "screens": {
+    "home": "अवसर खोजें",
+    "events": "मेरे इवेंट",
+    "earnings": "कमाई",
+    "profile": "मेरी प्रोफाइल",
+    "notifications": "सूचनाएं",
+    "checkin": "चेक इन",
+    "checkout": "चेक आउट",
+    "rating": "इवेंट रेट करें",
+    "referral": "रेफर करें और कमाएं",
+    "settings": "सेटिंग्स"
+  },
+  "profile": {
+    "reliabilityScore": "विश्वसनीयता स्कोर",
+    "categories": "पसंदीदा श्रेणियां",
+    "language": "भाषा",
+    "upiId": "UPI आईडी",
+    "goOffline": "ऑफलाइन जाएं",
+    "logout": "लॉग आउट",
+    "editProfile": "प्रोफाइल संपादित करें",
+    "paymentSettings": "भुगतान सेटिंग्स",
+    "notifications": "सूचनाएं"
+  }
+}
