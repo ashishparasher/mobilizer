@@ -53,12 +53,6 @@
         {
           "cameraPermission": "Allow Mobilize to access your camera for selfie checkins."
         }
-      ],
-      [
-        "expo-barcode-scanner",
-        {
-          "cameraPermission": "Allow Mobilize to access your camera to scan campaign QR codes."
-        }
       ]
     ],
     "extra": {
