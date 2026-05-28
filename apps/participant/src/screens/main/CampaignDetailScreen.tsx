@@ -3,7 +3,7 @@ import { View, Text, ScrollView, TouchableOpacity, SafeAreaView, ActivityIndicat
 import * as Calendar from 'expo-calendar';
 import { RouteProp } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import MapView, { Marker } from 'react-native-maps';
+import MapViewComponent from '../../components/common/MapViewComponent';
 import api from '../../lib/api';
 import { Campaign, Application } from '@mobilize/shared';
 import StatusBadge from '../../components/common/StatusBadge';
@@ -340,21 +340,11 @@ export function CampaignDetailScreen({ navigation, route }: CampaignDetailScreen
 
           {/* React Native MapView */}
           <View className="h-48 w-full rounded-3xl overflow-hidden border border-[#E2E8F0] mb-4">
-            <MapView
-              scrollEnabled={false}
-              zoomEnabled={false}
-              rotateEnabled={false}
-              pitchEnabled={false}
-              initialRegion={{
-                latitude: campaignLat,
-                longitude: campaignLng,
-                latitudeDelta: 0.015,
-                longitudeDelta: 0.015,
-              }}
+            <MapViewComponent
+              latitude={campaignLat}
+              longitude={campaignLng}
               className="w-full h-full"
-            >
-              <Marker coordinate={{ latitude: campaignLat, longitude: campaignLng }} />
-            </MapView>
+            />
           </View>
 
           <TouchableOpacity

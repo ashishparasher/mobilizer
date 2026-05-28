@@ -37,21 +37,13 @@ export default function WalletPage() {
       const session = await getSession();
       if (!session) return;
 
-      const profile = await api.get('/user/profile');
-      if (profile && profile.profile) {
-        setBalance(profile.profile.wallet_balance || 0);
-        setCampaignerId(profile.profile.id);
-
-        // Fetch transaction history directly from Supabase
-        const { data: txs, error: txError } = await supabase
-          .from('wallet_transactions')
-          .select('*')
-          .eq('campaigner_id', profile.profile.id)
-          .order('created_at', { ascending: false });
-
-        if (txError) throw txError;
+      // Fetch wallet data from API (uses service key, bypasses RLS)
+      const walletData = await api.get('/wallet/balance');
+      
+      if (walletData) {
+        setBalance(walletData.wallet_balance || 0);
         
-        const list = txs || [];
+        const list = walletData.transactions || [];
         setTransactions(list);
 
         // Calculate statistics
@@ -60,7 +52,7 @@ export default function WalletPage() {
         const currentMonth = new Date().getMonth();
         const currentYear = new Date().getFullYear();
 
-        list.forEach(tx => {
+        list.forEach((tx: any) => {
           const amt = Number(tx.amount || 0);
           if (tx.type === 'withdrawal' || amt < 0) {
             const absAmt = Math.abs(amt);
@@ -74,6 +66,12 @@ export default function WalletPage() {
 
         setSpentMonth(monthSum);
         setSpentAllTime(allTimeSum);
+
+        // Get campaigner ID from profile for CSV export
+        const profile = await api.get('/user/profile');
+        if (profile?.profile?.id) {
+          setCampaignerId(profile.profile.id);
+        }
       }
     } catch (err) {
       console.error('Failed to load wallet metrics:', err);

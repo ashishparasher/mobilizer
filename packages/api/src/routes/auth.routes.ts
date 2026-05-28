@@ -136,4 +136,69 @@ router.post('/update-push-token', requireAuth, async (req: AuthenticatedRequest,
   }
 });
 
+/**
+ * POST /api/auth/complete-onboarding
+ * Complete campaigner onboarding: update profile + record initial wallet transaction
+ * Uses supabaseAdmin to bypass RLS (avoids infinite recursion in users policy)
+ */
+router.post('/complete-onboarding', requireAuth, async (req: AuthenticatedRequest, res: Response) => {
+  const { description, website_url, wallet_amount, upi_id } = req.body;
+
+  try {
+    const userId = req.user!.id;
+
+    // 1. Fetch campaigner profile
+    const { data: campaigner, error: fetchError } = await supabaseAdmin
+      .from('campaigners')
+      .select('*')
+      .eq('user_id', userId)
+      .single();
+
+    if (fetchError || !campaigner) {
+      return res.status(404).json({ success: false, error: 'Campaigner profile not found. Please register first.' });
+    }
+
+    // 2. Update campaigner details
+    const { data: updatedCampaigner, error: updateError } = await supabaseAdmin
+      .from('campaigners')
+      .update({
+        description: description || null,
+        website_url: website_url || null,
+        wallet_balance: Number(wallet_amount || 0),
+        verified: true,
+      })
+      .eq('id', campaigner.id)
+      .select()
+      .single();
+
+    if (updateError) {
+      console.error('Error updating campaigner profile:', updateError);
+      return res.status(500).json({ success: false, error: 'Failed to update campaigner profile' });
+    }
+
+    // 3. Record initial wallet transaction (if wallet_amount > 0)
+    if (Number(wallet_amount) > 0) {
+      const { error: txError } = await supabaseAdmin
+        .from('wallet_transactions')
+        .insert({
+          campaigner_id: updatedCampaigner.id,
+          type: 'deposit',
+          amount: Number(wallet_amount),
+          balance_after: Number(wallet_amount),
+          description: `Initial wallet top-up via UPI (${upi_id || 'unknown'}) during onboarding`,
+        });
+
+      if (txError) {
+        console.error('Error recording wallet transaction:', txError);
+        // Non-critical — wallet balance was already updated
+      }
+    }
+
+    return res.status(200).json({ success: true, data: updatedCampaigner });
+  } catch (err: any) {
+    console.error('Complete onboarding error:', err);
+    return res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
 export default router;

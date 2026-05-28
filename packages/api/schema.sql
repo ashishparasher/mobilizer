@@ -501,12 +501,24 @@ CREATE POLICY "Users can read own data" ON users
 CREATE POLICY "Users can update own data" ON users
   FOR UPDATE USING (auth_id = auth.uid());
 
+-- Helper function to check if current auth user is a campaigner
+-- Uses SECURITY DEFINER to bypass RLS and avoid infinite recursion
+CREATE OR REPLACE FUNCTION public.is_campaigner()
+RETURNS BOOLEAN
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM users
+    WHERE auth_id = auth.uid() AND role = 'campaigner'
+  );
+$$;
+
 CREATE POLICY "Campaigners can view participant basic info" ON users
   FOR SELECT USING (
-    EXISTS (
-      SELECT 1 FROM users u 
-      WHERE u.auth_id = auth.uid() AND u.role = 'campaigner'
-    )
+    public.is_campaigner()
   );
 
 -- Participant profiles policies

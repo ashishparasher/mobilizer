@@ -1,8 +1,14 @@
 declare const process: any;
 import { getAuthHeaders } from './supabase';
+import { Platform } from 'react-native';
 
 // EXPO_PUBLIC_API_URL defaults to localhost (or 10.0.2.2 for Android emulator)
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://10.0.2.2:3001/api';
+const getDefaultBaseUrl = () => {
+  if (Platform.OS === 'android') return 'http://10.0.2.2:3001/api';
+  return 'http://localhost:3001/api';
+};
+
+const BASE_URL = process.env.EXPO_PUBLIC_API_URL || getDefaultBaseUrl();
 
 /** Check basic network connectivity before making requests */
 async function checkConnectivity(): Promise<boolean> {

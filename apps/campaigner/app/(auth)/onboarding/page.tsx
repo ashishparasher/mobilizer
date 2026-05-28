@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { supabase, getSession } from '@/lib/supabase';
+import { getSession } from '@/lib/supabase';
 import api from '@/lib/api';
 import { Card, CardHeader, CardContent, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -148,31 +148,12 @@ export default function OnboardingPage() {
         throw new Error('Registration failed to return user record');
       }
 
-      // 2. Since register creates campaigner profile, update the remaining details
-      const { data: updatedCampaigner, error: campaignerUpdateError } = await supabase
-        .from('campaigners')
-        .update({
-          description,
-          website_url: websiteUrl || null,
-          wallet_balance: Number(walletAmount),
-          verified: true, // Auto-verify in dev/onboarding mock
-        })
-        .eq('user_id', userRecord.id)
-        .select()
-        .single();
-
-      if (campaignerUpdateError) {
-        console.error('Error updating campaigner details:', campaignerUpdateError);
-        throw campaignerUpdateError;
-      }
-
-      // 3. Record mock transaction
-      await supabase.from('wallet_transactions').insert({
-        campaigner_id: updatedCampaigner.id,
-        type: 'deposit',
-        amount: Number(walletAmount),
-        balance_after: Number(walletAmount),
-        description: `Initial wallet top-up via UPI (${upiId}) during onboarding`,
+      // 2. Complete onboarding via API (uses service key, bypasses RLS)
+      await api.post('/auth/complete-onboarding', {
+        description,
+        website_url: websiteUrl || null,
+        wallet_amount: Number(walletAmount),
+        upi_id: upiId,
       });
 
       toast.success('Setup Completed Successfully!', { description: 'Welcome to Mobilize! Redirecting...' });
@@ -182,7 +163,7 @@ export default function OnboardingPage() {
         window.location.href = '/';
       }, 1500);
     } catch (err: any) {
-      console.error('Onboarding submission error:', err);
+      console.warn('Onboarding submission error:', err);
       toast.error('Failed to complete onboarding', { description: err.message || 'Server error' });
       setLoading(false);
     }
@@ -219,7 +200,7 @@ export default function OnboardingPage() {
                 placeholder="e.g. Apex Events Pvt Ltd"
                 value={orgName}
                 onChange={(e) => setOrgName(e.target.value)}
-                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl"
+                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl text-slate-900"
               />
             </div>
 
@@ -228,7 +209,7 @@ export default function OnboardingPage() {
                 Organization Type
               </Label>
               <Select value={orgType} onValueChange={(val) => setOrgType(val || 'brand_activation')}>
-                <SelectTrigger className="border-[#E2E8F0] rounded-xl focus:ring-[#FF6B35]">
+                <SelectTrigger className="border-[#E2E8F0] rounded-xl focus:ring-[#FF6B35] text-slate-900">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -252,7 +233,7 @@ export default function OnboardingPage() {
                 placeholder="https://example.com"
                 value={websiteUrl}
                 onChange={(e) => setWebsiteUrl(e.target.value)}
-                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl"
+                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl text-slate-900"
               />
             </div>
 
@@ -266,7 +247,7 @@ export default function OnboardingPage() {
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                className="w-full text-sm border border-[#E2E8F0] focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] rounded-xl p-3 outline-none resize-none"
+                className="w-full text-sm border border-[#E2E8F0] focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] rounded-xl p-3 outline-none resize-none text-slate-900"
               />
             </div>
           </div>
@@ -284,7 +265,7 @@ export default function OnboardingPage() {
                 placeholder="e.g. Ashish Kumar"
                 value={contactName}
                 onChange={(e) => setContactName(e.target.value)}
-                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl"
+                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl text-slate-900"
               />
             </div>
 
@@ -301,7 +282,7 @@ export default function OnboardingPage() {
                 placeholder="ABCDE1234F"
                 value={pan}
                 onChange={(e) => setPan(e.target.value.toUpperCase())}
-                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl uppercase font-mono tracking-wider"
+                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl uppercase font-mono tracking-wider text-slate-900"
               />
             </div>
 
@@ -315,7 +296,7 @@ export default function OnboardingPage() {
                 placeholder="22AAAAA0000A1Z5"
                 value={gstin}
                 onChange={(e) => setGstin(e.target.value.toUpperCase())}
-                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl uppercase font-mono tracking-wider"
+                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl uppercase font-mono tracking-wider text-slate-900"
               />
             </div>
 
@@ -329,7 +310,7 @@ export default function OnboardingPage() {
                   placeholder="Mumbai"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl"
+                  className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl text-slate-900"
                 />
               </div>
               <div className="space-y-1">
@@ -341,7 +322,7 @@ export default function OnboardingPage() {
                   placeholder="Maharashtra"
                   value={state}
                   onChange={(e) => setState(e.target.value)}
-                  className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl"
+                  className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl text-slate-900"
                 />
               </div>
             </div>
@@ -385,7 +366,7 @@ export default function OnboardingPage() {
                   placeholder="Or enter custom amount"
                   value={walletAmount}
                   onChange={(e) => setWalletAmount(e.target.value)}
-                  className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl"
+                  className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl text-slate-900"
                 />
               </div>
             </div>
@@ -399,7 +380,7 @@ export default function OnboardingPage() {
                 placeholder="org@upi"
                 value={upiId}
                 onChange={(e) => setUpiId(e.target.value)}
-                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl font-mono text-sm"
+                className="border-[#E2E8F0] focus-visible:ring-[#FF6B35] rounded-xl font-mono text-sm text-slate-900"
               />
             </div>
 

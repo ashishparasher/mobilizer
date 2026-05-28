@@ -161,7 +161,7 @@ export default function LoginPage() {
                   maxLength={10}
                   value={phone}
                   onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
-                  className="border-0 bg-transparent flex-1 focus-visible:ring-0 focus-visible:ring-offset-0 px-4 py-3"
+                  className="border-0 bg-transparent flex-1 focus-visible:ring-0 focus-visible:ring-offset-0 px-4 py-3 text-slate-900"
                   required
                   disabled={loading}
                 />
@@ -189,7 +189,7 @@ export default function LoginPage() {
                 maxLength={6}
                 value={otp}
                 onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, ''))}
-                className="border-[#E2E8F0] bg-[#F8FAFC] focus-visible:ring-[#FF6B35] rounded-xl text-center text-lg font-black tracking-widest py-6"
+                className="border-[#E2E8F0] bg-[#F8FAFC] focus-visible:ring-[#FF6B35] rounded-xl text-center text-lg font-black tracking-widest py-6 text-slate-900"
                 required
                 disabled={loading}
                 autoFocus
