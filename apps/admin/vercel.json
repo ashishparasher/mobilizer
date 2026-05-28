@@ -1,0 +1,5 @@
+{
+  "buildCommand": "cd ../../ && npm run build --workspace=admin",
+  "installCommand": "npm install",
+  "framework": "nextjs"
+}
