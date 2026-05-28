@@ -4,8 +4,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 
 // Environment variables in Expo must start with EXPO_PUBLIC_
-const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
-const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || 'placeholder';
+const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || supabaseUrl.includes('placeholder')) {
+  console.error('[Supabase] EXPO_PUBLIC_SUPABASE_URL is missing or invalid:', supabaseUrl);
+}
+if (!supabaseAnonKey || supabaseAnonKey === 'placeholder') {
+  console.error('[Supabase] EXPO_PUBLIC_SUPABASE_ANON_KEY is missing or invalid');
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {

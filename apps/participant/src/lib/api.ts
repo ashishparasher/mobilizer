@@ -8,7 +8,23 @@ const getDefaultBaseUrl = () => {
   return 'http://localhost:3001/api';
 };
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL || getDefaultBaseUrl();
+const rawUrl = process.env.EXPO_PUBLIC_API_URL;
+
+function buildBaseUrl(): string {
+  if (!rawUrl) return getDefaultBaseUrl();
+  let url = rawUrl.trim();
+  // Ensure protocol
+  if (!url.startsWith('http://') && !url.startsWith('https://')) {
+    url = `https://${url}`;
+  }
+  // Ensure /api suffix
+  if (!url.endsWith('/api')) {
+    url = url.replace(/\/+$/, '') + '/api';
+  }
+  return url;
+}
+
+const BASE_URL = buildBaseUrl();
 
 /** Check basic network connectivity before making requests */
 async function checkConnectivity(): Promise<boolean> {
